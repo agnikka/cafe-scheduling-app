@@ -39,9 +39,9 @@ app.get('/users/:userId', (req, res) => {
 
 app.post('/users', (req, res) => {
   const newUser = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    email: req.body.email,
+    firstname: req.body.firstname.trim(),
+    lastname: req.body.lastname.trim(),
+    email: req.body.email.trim(),
     password: req.body.password.trim(),
   };
 
@@ -103,10 +103,10 @@ app.get('/schedules/:scheduleId', (req, res) => {
 
 app.post('/schedules', (req, res) => {
   const newSchedule = {
-    user_id: req.body.user_id,
-    day: req.body.day,
-    start_at: req.body.start_at,
-    end_at: req.body.end_at,
+    user_id: req.body.user_id.trim(),
+    day: req.body.day.trim(),
+    start_at: req.body.start_at.trim(),
+    end_at: req.body.end_at.trim(),
   };
 
   if (!newSchedule.user_id || !newSchedule.day || !newSchedule.start_at || !newSchedule.end_at) {
