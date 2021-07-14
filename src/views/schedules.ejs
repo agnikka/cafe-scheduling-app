@@ -1,0 +1,29 @@
+<table>
+  <tr>
+    <th>User ID</th>
+    <th>Day</th>
+    <th>Start at</th>
+    <th>End at</th>
+  </tr>
+  <% schedules.forEach(schedule => { %>
+  <tr>
+    <td><%= schedule.user_id %></th>
+    <td><%= schedule.day %></th>
+    <td><%= schedule.start_at %></th>
+    <td><%= schedule.end_at %></th>
+  </tr>
+  <% }) %>
+</table>
+
+
+<!-- Alternatively: unordered list -->
+<!-- <ul>
+  <% schedules.forEach(schedule => { %>
+    <div class="schedules-list">
+      <li><%= schedule.user_id %></li>
+      <li><%= schedule.day %></li>
+      <li><%= schedule.start_at %></li>
+      <li><%= schedule.end_at %></li>
+    </div>
+  <% }) %>
+</ul> -->

@@ -1,32 +1,41 @@
 // TODO: Try most recommended way to add body-parser https://github.com/expressjs/body-parser
 
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const crypto = require('crypto');
+const path = require('path');
+const expressLayouts = require('express-ejs-layouts');
+const ejsLint = require('ejs-lint');
 const data = require('./data');
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 app.use(express.json());
 const port = 3000;
 const { users } = data; // previously: const users = data.users - fixed by eslint
 const { schedules } = data; // previously: const schedules = data.schedules - fixed by eslint
 
-// Get the main page
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.set('layout', 'layout');
+app.use(expressLayouts);
+app.use(express.static('public/css'));
 
+// Get the main page
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to our schedule website' });
+  res.render('welcomePage', { title: 'Welcome', text: 'Welcome to our schedule website' });
+  // former code before views: res.json({ message: 'Welcome to our schedule website' });
 });
 
 // Get all users
-
 app.get('/users', (req, res) => {
-  res.json(users);
+  res.render('users', { title: 'Users', users });
+  // former code before views: res.json(users);
 });
 
 // Get a specific user
-
 app.get('/users/:userId', (req, res) => {
   const userId = Number(req.params.userId);
   if (users[userId] === undefined) {
@@ -36,7 +45,6 @@ app.get('/users/:userId', (req, res) => {
 });
 
 // Post a new user with sha-256 hashed password
-
 app.post('/users', (req, res) => {
   const newUser = {
     firstname: req.body.firstname.trim(),
@@ -65,7 +73,6 @@ app.post('/users', (req, res) => {
 });
 
 // GET schedules for specific user
-
 app.get('/users/:userId/schedules', (req, res) => {
   const userId = Number(req.params.userId);
   const usersSchedules = [];
@@ -84,13 +91,11 @@ app.get('/users/:userId/schedules', (req, res) => {
 });
 
 // GET all schedules
-
 app.get('/schedules', (req, res) => {
-  res.json(schedules);
+  res.render('schedules', { title: 'Schedules', schedules });
 });
 
 // GET a specific schedule
-
 app.get('/schedules/:scheduleId', (req, res) => {
   const scheduleId = Number(req.params.scheduleId);
   if (schedules[scheduleId] === undefined) {
@@ -100,7 +105,6 @@ app.get('/schedules/:scheduleId', (req, res) => {
 });
 
 // POST a new schedule
-
 app.post('/schedules', (req, res) => {
   const newSchedule = {
     user_id: req.body.user_id.trim(),
