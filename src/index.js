@@ -1,11 +1,13 @@
-// TODO: Try most recommended way to add body-parser https://github.com/expressjs/body-parser
+// TODO: Add separate js file(s) for forms validation with preventDefault
+// TODO: Add error template or modals / alerts
+// TODO?: Try most recommended way to add body-parser https://github.com/expressjs/body-parser
+// Note: old commented code left for educational reasons
 
 const express = require('express');
 // const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
-const ejsLint = require('ejs-lint');
 const data = require('./data');
 
 const app = express();
@@ -22,6 +24,7 @@ app.set('view engine', 'ejs');
 app.set('layout', 'layout');
 app.use(expressLayouts);
 app.use(express.static('public/css'));
+app.use(express.static('src'));
 
 // Get the main page
 app.get('/', (req, res) => {
@@ -35,13 +38,18 @@ app.get('/users', (req, res) => {
   // former code before views: res.json(users);
 });
 
+// Get a new user form
+app.get('/users/new', (req, res) => {
+  res.render('newUser', { title: 'New User' });
+});
+
 // Get a specific user
 app.get('/users/:userId', (req, res) => {
   const userId = Number(req.params.userId);
   if (users[userId] === undefined) {
     res.status(404).json(`Incorrect user id: ${userId}`);
   }
-  res.json(users[userId]);
+  res.render('user', { title: `User ${userId}`, user: users[userId] });
 });
 
 // Post a new user with sha-256 hashed password
@@ -66,10 +74,10 @@ app.post('/users', (req, res) => {
   //     .update(pwd)
   //     .digest('hex');
   // }
+  // newUser.password = hashPassword(newUser.password);
 
-  // hashPassword(newUser.password);
   users.push(newUser);
-  res.json(newUser);
+  res.redirect('users');
 });
 
 // GET schedules for specific user
@@ -95,6 +103,11 @@ app.get('/schedules', (req, res) => {
   res.render('schedules', { title: 'Schedules', schedules });
 });
 
+// Get a new schedule form
+app.get('/schedules/new', (req, res) => {
+  res.render('newSchedule', { title: 'New Schedule' });
+});
+
 // GET a specific schedule
 app.get('/schedules/:scheduleId', (req, res) => {
   const scheduleId = Number(req.params.scheduleId);
@@ -117,7 +130,7 @@ app.post('/schedules', (req, res) => {
     res.status(404).json('Please fill out all required fields');
   }
   schedules.push(newSchedule);
-  res.json(newSchedule);
+  res.redirect('/schedules');
 });
 
 app.listen(port, () => {

@@ -1,15 +1,24 @@
 * {
-    background-color: #ccffff;
+    background-color: #Eaf6f9;
     font-family: sans-serif;
 }
 
 body {
-  margin: 0;  
+  margin: 0;
 }
 
 .website-title {
     font-size: 30px;
+    letter-spacing: 1.5px;
+    display: inline-block;
+    margin-right: 20px;
     /* border-bottom: 1px solid #000; */
+}
+
+.website-subtitle {
+    font-size: 15px;
+    letter-spacing: 1.2px;
+    display: inline-block;
 }
 
 .nav li{
@@ -24,11 +33,12 @@ body {
 /* .nav li:hover, */
 a:hover {
     cursor: pointer;
-    background-color: turquoise;
+    background-color: #Fffff5;
 }
 
 a {
     text-decoration: none;
+    color: #000;
 }
 
 .wrapper {
@@ -58,7 +68,32 @@ th, td {
 }
 
 th {
-    background-color: #76b5c5
+    background-color: #abdbe3;
+}
+
+td {
+    background-color: #Fffff5;
+}
+
+.centered {
+    margin: auto;
+}
+
+input {
+    display: block;
+    background-color: #Fffff5;
+}
+
+input[type="submit"] {
+    padding: 5px;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 /* .users-list,
