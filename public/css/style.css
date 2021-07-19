@@ -7,6 +7,16 @@ body {
   margin: 0;
 }
 
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* .centered {
+    width: 90%;
+    margin: 0 auto;
+} */
+
 .website-title {
     font-size: 30px;
     letter-spacing: 1.5px;
@@ -21,13 +31,19 @@ body {
     display: inline-block;
 }
 
+.nav {
+    margin-left: 10px;
+    padding-left: 0;
+}
+
 .nav li{
     display: inline-block;
     font-size: 20px;
-    margin: 10px 15px;
+    margin: 10px 15px 10px 0;
     padding: 5px;
-    border: 1px solid grey;
+    border: 1px solid #D4D4CB;
     border-radius: 10px;
+    background-color: #Fffff5;
 }
 
 /* .nav li:hover, */
@@ -39,11 +55,6 @@ a:hover {
 a {
     text-decoration: none;
     color: #000;
-}
-
-.wrapper {
-    width: 90%;
-    margin: 0 auto;
 }
 
 .welcome-text {
@@ -59,12 +70,12 @@ ul {
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid #D4D4CB;
     border-collapse: collapse;
   }
 
 th, td {
-    padding: 15px;
+    padding: 10px;
 }
 
 th {
@@ -75,26 +86,40 @@ td {
     background-color: #Fffff5;
 }
 
-.centered {
-    margin: auto;
-}
-
 input {
     display: block;
     background-color: #Fffff5;
+    width: 50%;
+    height: 30px;
+    border: 1px solid #D4D4CB;
 }
 
 input[type="submit"] {
-    padding: 5px;
-    margin-top: 20px;
+    /* padding: 10px; */
+    margin: 30px 180px;
     font-size: 15px;
+    width: 20%;
 }
 
 label {
     display: block;
     margin-top: 20px;
     margin-bottom: 10px;
+    font-size: 15px;
 }
+
+button {
+    background-color: #Fffff5;
+    border: 1px solid #D4D4CB;
+    padding: 5px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 30%;
+    height: 30px;
+ }
 
 /* .users-list,
 .schedules-list {

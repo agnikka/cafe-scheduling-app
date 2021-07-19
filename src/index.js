@@ -1,7 +1,8 @@
 // TODO: Add separate js file(s) for forms validation with preventDefault
-// TODO: Add error template or modals / alerts
 // TODO?: Try most recommended way to add body-parser https://github.com/expressjs/body-parser
-// Note: old commented code left for educational reasons
+// TODO: Check if user data exists before creating user
+// TODO: 'Back' button on error site with last url as a parameter
+// Note: commented former code preserved due to educational reasons
 
 const express = require('express');
 // const bodyParser = require('body-parser');
@@ -10,21 +11,22 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const data = require('./data');
 
+const port = 3000;
+const { users } = data; // previously: const users = data.users - fixed by eslint
+const { schedules } = data; // previously: const schedules = data.schedules - fixed by eslint
 const app = express();
+
 app.use(express.urlencoded({ extended: false }));
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 app.use(express.json());
-const port = 3000;
-const { users } = data; // previously: const users = data.users - fixed by eslint
-const { schedules } = data; // previously: const schedules = data.schedules - fixed by eslint
+app.use(expressLayouts);
+app.use(express.static('public/css'));
+app.use(express.static('src'));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('layout', 'layout');
-app.use(expressLayouts);
-app.use(express.static('public/css'));
-app.use(express.static('src'));
 
 // Get the main page
 app.get('/', (req, res) => {
@@ -47,10 +49,13 @@ app.get('/users/new', (req, res) => {
 app.get('/users/:userId', (req, res) => {
   const userId = Number(req.params.userId);
   if (users[userId] === undefined) {
-    res.status(404).json(`Incorrect user id: ${userId}`);
+    res.status(404).render('error', { title: 'error', text: `Incorrect user id: ${userId}` });
+    // res.status(404).json(`Incorrect user id: ${userId}`);
   }
   res.render('user', { title: `User ${userId}`, user: users[userId] });
+// res.json(users[userId]);
 });
+// url: '/users/:userId'
 
 // Post a new user with sha-256 hashed password
 app.post('/users', (req, res) => {
@@ -62,7 +67,8 @@ app.post('/users', (req, res) => {
   };
 
   if (!newUser.firstname || !newUser.lastname || !newUser.email || !newUser.password) {
-    res.status(404).json('Please fill out all required fields');
+    res.status(404).render('error', { title: 'error', text: 'Please fill out all required fields' });
+    // res.status(404).json('Please fill out all required fields');
   }
 
   newUser.password = crypto.createHash('sha256')
@@ -90,12 +96,23 @@ app.get('/users/:userId/schedules', (req, res) => {
     }
   });
   if (users[userId] === undefined) {
-    res.status(404).json(`Incorrect user id: ${userId}`);
+    res.status(404).render('error', { title: 'error', text: `Incorrect user id: ${userId}` });
+    // res.redirect('/users');
+    // res.status(404).json(`Incorrect user id: ${userId}`);
   }
   if (usersSchedules.length === 0) {
-    res.json('No schedules for this user');
+    res.render('error', { text: `No schedules for user ID:  ${userId}` });
+    // res.redirect('/users');
+    // res.json('No schedules for this user');
   }
-  res.json(usersSchedules);
+  res.render('userSchedules', {
+    title: 'User schedules',
+    users,
+    user: users[userId],
+    schedules,
+    usersSchedules,
+  });
+  // res.json(usersSchedules);
 });
 
 // GET all schedules
@@ -112,9 +129,11 @@ app.get('/schedules/new', (req, res) => {
 app.get('/schedules/:scheduleId', (req, res) => {
   const scheduleId = Number(req.params.scheduleId);
   if (schedules[scheduleId] === undefined) {
-    res.status(404).json(`Incorrect schedule id: ${scheduleId}`);
+    res.status(404).render('error', { title: 'error', text: `Incorrect schedule id: ${scheduleId}` });
+    // res.status(404).json(`Incorrect schedule id: ${scheduleId}`);
   }
-  res.json(schedules[scheduleId]);
+  res.render('schedule', { title: `Schedule ${scheduleId}`, schedule: schedules[scheduleId] });
+  // res.json(schedules[scheduleId]);
 });
 
 // POST a new schedule
@@ -127,7 +146,8 @@ app.post('/schedules', (req, res) => {
   };
 
   if (!newSchedule.user_id || !newSchedule.day || !newSchedule.start_at || !newSchedule.end_at) {
-    res.status(404).json('Please fill out all required fields');
+    res.status(404).render('error', { title: 'error', text: 'Please fill out all required fields' })
+    // res.status(404).json('Please fill out all required fields');
   }
   schedules.push(newSchedule);
   res.redirect('/schedules');

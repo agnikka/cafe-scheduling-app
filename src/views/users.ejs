@@ -5,26 +5,16 @@
     <th>Email</th>
     <th>Password</th>
     <th></th>
+    <th></th>
   </tr>
-  <% users.forEach(user => { %>
+  <% for(let index = 0; index < users.length; index++) { %>
     <tr class="userRow">
-      <td><%= user.firstname %></td>
-      <td><%= user.lastname %></td>
-      <td><%= user.email %></td>
-      <td><%= user.password %></td>
-      <td><a href='/users/<%= users.user %>'>Show</a></td>
+      <td><%= users[index].firstname %></td>
+      <td><%= users[index].lastname %></td>
+      <td><%= users[index].email %></td>
+      <td><%= users[index].password %></td>
+      <td><a href='/users/<%= index %>'>Show</a></td>
+      <td><a href='/users/<%= index %>/schedules'>Schedules</a></td>
     </tr>
-  <% }) %>
+  <% } %>
 </table>
-
-<!-- Alternatively: unordered list -->
-<!-- <ul>
-  <% users.forEach(user => { %>
-    <div class="users-list">
-      <li><%= user.firstname %></li>
-      <li><%= user.lastname %></li>
-      <li><%= user.email %></li>
-      <li><%= user.password %></li>
-    </div>
-  <% }) %>
-</ul> -->
