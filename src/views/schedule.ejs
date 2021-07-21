@@ -1,8 +1,9 @@
 <ul>
-  <li>User ID: <%= schedule.user_id %></li>
-  <!-- <li>Username: <%= // schedule.user_id.firstname %></li> -->
-  <li>Day: <%= schedule.day %></li>
-  <li>Start at: <%= schedule.start_at %></li>
-  <li>End at: <%= schedule.end_at %></li>
+  <li><p class="li-label">User ID:</p> <%= schedule.user_id %></li>
+  <li><p class="li-label">Username:</p> <%= users[schedule.user_id].firstname + ' ' + users[schedule.user_id].lastname %></li>
+  <li><p class="li-label">Day no.:</p> <%= schedule.day %></li>
+  <!-- <li><p class="li-label">Day:</p> <%= // getWeekDay(schedule.day) %></li> -->
+  <li><p class="li-label">Start at:</p> <%= schedule.start_at %></li>
+  <li><p class="li-label">End at:</p> <%= schedule.end_at %></li>
 </ul>
 <button><a href="/schedules">Back to Schedules</a></button>

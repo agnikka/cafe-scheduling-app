@@ -1,17 +1,21 @@
 <table>
   <tr>
     <th>User ID</th>
-    <th>Day</th>
+    <th>Username</th>
+    <th>Day no.</th>
+    <!-- <th>Day</th> -->
     <th>Start at</th>
     <th>End at</th>
     <th></th>
   </tr>
   <% for(let index = 0; index < schedules.length; index++) { %>
   <tr>
-    <td><%= schedules[index].user_id %></th>
-    <td><%= schedules[index].day %></th>
-    <td><%= schedules[index].start_at %></th>
-    <td><%= schedules[index].end_at %></th>
+    <td><%= schedules[index].user_id %></td>
+    <td><%= users[schedules[index].user_id].firstname + ' ' + users[schedules[index].user_id].lastname %></td>
+    <td><%= schedules[index].day %></td>
+    <!-- <td><%= // getWeekDay(schedules[index].day) %></td> -->
+    <td><%= schedules[index].start_at %></td>
+    <td><%= schedules[index].end_at %></td>
     <td><a href='/schedules/<%= index %>'>Show</a></td>
   </tr>
   <% } %>

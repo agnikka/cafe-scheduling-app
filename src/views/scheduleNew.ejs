@@ -1,0 +1,36 @@
+<div class="centered">
+
+  <h2>New schedule</h2>
+
+  <form class="form" id="new-schedule-form" method="POST" action="/schedules">
+
+    <label for="user_id1">User ID</label>
+    <input type="number" id="user_id1" name="user_id1" min="0" max="<%= users.length-1 %>" placeholder="0" required>
+
+    <label for="user_id">User ID</label>
+    <select id="user_id" name="user_id">
+      <% for(let index = 0; index < users.length; index++) { %>
+      <option value="<%= index %>"><%= index %></option> <% } %>
+    </select>
+
+    <label for="usernames">Users' names</label>
+    <select id="usernames" name="usernames">
+      <% for(let index = 0; index < users.length; index++) { %>
+      <option value="<%= users[index].lastname + ' ' + users[index].firstname %>">
+      <%= users[index].lastname + ' ' + users[index].firstname %></option> <% } %>
+    </select>
+    
+    <label for="day">Day</label>
+    <input type="number" id="day" name="day" min="1" max="7" placeholder="1" required>
+
+    <label for="start_at">Start at</label>
+    <input type="time" id="start_at" name="start_at" required>
+
+    <label for="end_at">End at</label>
+    <input type="time" id="end_at" name="end_at" required>
+
+    <input type="submit" value="Create schedule" required>
+
+  </form>
+
+</div>

@@ -1,5 +1,6 @@
 <table>
   <tr>
+    <th>ID</th>
     <th>First name</th>
     <th>Last name</th>
     <th>Email</th>
@@ -9,6 +10,7 @@
   </tr>
   <% for(let index = 0; index < users.length; index++) { %>
     <tr class="userRow">
+      <td><%= index %></td>
       <td><%= users[index].firstname %></td>
       <td><%= users[index].lastname %></td>
       <td><%= users[index].email %></td>

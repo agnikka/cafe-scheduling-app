@@ -1,24 +1,22 @@
 // TODO: Add separate js file(s) for forms validation with preventDefault
-// TODO?: Try most recommended way to add body-parser https://github.com/expressjs/body-parser
-// TODO: Check if user data exists before creating user
-// TODO: 'Back' button on error site with last url as a parameter
+// TODO?: Try most recommended way to add body-parser https://github.com/expressjs/body-parser ?
+// TODO: Check if user data exist before creating user
+// TODO: organize files
 // Note: commented former code preserved due to educational reasons
 
 const express = require('express');
-// const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const data = require('./data');
+// const daysNames = require('./daysNames');
 
 const port = 3000;
-const { users } = data; // previously: const users = data.users - fixed by eslint
-const { schedules } = data; // previously: const schedules = data.schedules - fixed by eslint
+const { users, schedules } = data;
+// const { getWeekDay } = daysNames;
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
 app.use(express.json());
 app.use(expressLayouts);
 app.use(express.static('public/css'));
@@ -31,18 +29,16 @@ app.set('layout', 'layout');
 // Get the main page
 app.get('/', (req, res) => {
   res.render('welcomePage', { title: 'Welcome', text: 'Welcome to our schedule website' });
-  // former code before views: res.json({ message: 'Welcome to our schedule website' });
 });
 
 // Get all users
 app.get('/users', (req, res) => {
   res.render('users', { title: 'Users', users });
-  // former code before views: res.json(users);
 });
 
 // Get a new user form
 app.get('/users/new', (req, res) => {
-  res.render('newUser', { title: 'New User' });
+  res.render('userNew', { title: 'New User' });
 });
 
 // Get a specific user
@@ -50,12 +46,9 @@ app.get('/users/:userId', (req, res) => {
   const userId = Number(req.params.userId);
   if (users[userId] === undefined) {
     res.status(404).render('error', { title: 'error', text: `Incorrect user id: ${userId}` });
-    // res.status(404).json(`Incorrect user id: ${userId}`);
   }
-  res.render('user', { title: `User ${userId}`, user: users[userId] });
-// res.json(users[userId]);
+  res.render('user', { title: `User ${userId}`, userId, user: users[userId] });
 });
-// url: '/users/:userId'
 
 // Post a new user with sha-256 hashed password
 app.post('/users', (req, res) => {
@@ -68,19 +61,11 @@ app.post('/users', (req, res) => {
 
   if (!newUser.firstname || !newUser.lastname || !newUser.email || !newUser.password) {
     res.status(404).render('error', { title: 'error', text: 'Please fill out all required fields' });
-    // res.status(404).json('Please fill out all required fields');
   }
 
   newUser.password = crypto.createHash('sha256')
     .update('newUser.password')
     .digest('hex');
-
-  // function hashPassword(pwd) {
-  //   return crypto.createHash('sha256')
-  //     .update(pwd)
-  //     .digest('hex');
-  // }
-  // newUser.password = hashPassword(newUser.password);
 
   users.push(newUser);
   res.redirect('users');
@@ -95,34 +80,40 @@ app.get('/users/:userId/schedules', (req, res) => {
       usersSchedules.push(item);
     }
   });
+
   if (users[userId] === undefined) {
     res.status(404).render('error', { title: 'error', text: `Incorrect user id: ${userId}` });
-    // res.redirect('/users');
-    // res.status(404).json(`Incorrect user id: ${userId}`);
+    res.redirect('/users');
   }
-  if (usersSchedules.length === 0) {
-    res.render('error', { text: `No schedules for user ID:  ${userId}` });
-    // res.redirect('/users');
-    // res.json('No schedules for this user');
-  }
+
+  // if (usersSchedules.length < 1) {
+  //   res.render('error', { text: `No schedules for user ID:  ${userId}` });
+  //   res.redirect('/users');
+  // }
+
+  // if (usersSchedules.length === 0) {
+  //   res.render('userSchedules', {
+  //  title: 'User schedules', text: `No schedules for user ID:  ${userId}` });
+  // }
+
   res.render('userSchedules', {
     title: 'User schedules',
+    text: `Schedules for user ID:  ${userId}`,
     users,
     user: users[userId],
     schedules,
     usersSchedules,
   });
-  // res.json(usersSchedules);
 });
 
 // GET all schedules
 app.get('/schedules', (req, res) => {
-  res.render('schedules', { title: 'Schedules', schedules });
+  res.render('schedules', { title: 'Schedules', schedules, users });
 });
 
 // Get a new schedule form
 app.get('/schedules/new', (req, res) => {
-  res.render('newSchedule', { title: 'New Schedule' });
+  res.render('scheduleNew', { title: 'New Schedule', users });
 });
 
 // GET a specific schedule
@@ -130,10 +121,8 @@ app.get('/schedules/:scheduleId', (req, res) => {
   const scheduleId = Number(req.params.scheduleId);
   if (schedules[scheduleId] === undefined) {
     res.status(404).render('error', { title: 'error', text: `Incorrect schedule id: ${scheduleId}` });
-    // res.status(404).json(`Incorrect schedule id: ${scheduleId}`);
   }
-  res.render('schedule', { title: `Schedule ${scheduleId}`, schedule: schedules[scheduleId] });
-  // res.json(schedules[scheduleId]);
+  res.render('schedule', { title: `Schedule ${scheduleId}`, schedule: schedules[scheduleId], users });
 });
 
 // POST a new schedule
@@ -147,7 +136,6 @@ app.post('/schedules', (req, res) => {
 
   if (!newSchedule.user_id || !newSchedule.day || !newSchedule.start_at || !newSchedule.end_at) {
     res.status(404).render('error', { title: 'error', text: 'Please fill out all required fields' })
-    // res.status(404).json('Please fill out all required fields');
   }
   schedules.push(newSchedule);
   res.redirect('/schedules');

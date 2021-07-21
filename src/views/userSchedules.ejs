@@ -1,10 +1,20 @@
-userschedules
+<h2><%= text %></h2>
+<h3><%= user.firstname + ' ' + user.lastname %></h3>
+<table>
+  <tr>
+    <th>User ID</th>
+    <th>Day</th>
+    <th>Start at</th>
+    <th>End at</th>
+</tr>
+<% for(let index = 0; index < usersSchedules.length; index++) { %>
+  <tr>
+    <td><%= schedules[index].user_id %></td>
+    <td><%= schedules[index].day %></td>
+    <td><%= schedules[index].start_at %></td>
+    <td><%= schedules[index].end_at %></td>
+  </tr>
+<% } %>
+</table>
 
-
-<!-- <ul>
-    <li>First name: <%= user.firstname %></li>
-    <li>Last name: <%= user.lastname %></li>
-    <li>Email: <%= user.email %></li>
-    <li>Password: <%= user.password %></li>
-    </ul>
-    <button><a href="/users">Back to Users</a></button> -->
+<button class="back-button"><a href="/users">Back to Users</a></button>

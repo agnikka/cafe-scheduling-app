@@ -86,7 +86,7 @@ td {
     background-color: #Fffff5;
 }
 
-input {
+input, select {
     display: block;
     background-color: #Fffff5;
     width: 50%;
@@ -108,20 +108,30 @@ label {
     font-size: 15px;
 }
 
+.li-spaced {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.li-label {
+    font-weight: 700;
+}
+
 button {
     background-color: #Fffff5;
     border: 1px solid #D4D4CB;
     padding: 5px;
+    margin-top: 15px;
+}
+
+.error-back-button {
+    cursor: pointer;
 }
 
 .footer {
     position: absolute;
     bottom: 0;
-    width: 30%;
-    height: 30px;
+    /* width: 30%; */
+    height: 20px;
  }
-
-/* .users-list,
-.schedules-list {
-    margin-bottom: 20px;
-} */
+ 
