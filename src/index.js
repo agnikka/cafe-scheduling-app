@@ -2,6 +2,7 @@
 // TODO?: Try most recommended way to add body-parser https://github.com/expressjs/body-parser ?
 // TODO: Check if user data exist before creating user
 // TODO: organize files
+// TODO: schedules filtering by user
 // Note: commented former code preserved due to educational reasons
 
 const express = require('express');
